@@ -16,3 +16,14 @@ def create_playlist():
 def get_playlists_by_user(user_id):
     playlists = playlists_collection.find({'user_id': user_id})
     return jsonify([Playlist.from_mongo(playlist).to_dict() for playlist in playlists])
+
+def update_playlist(playlist_id):
+    data = request.get_json()
+    updated_playlist = Playlist.from_dict(data)
+    result = playlists_collection.update_one({'_id': ObjectId(playlist_id)}, {'$set': updated_playlist.to_dict()})
+    return jsonify(result.modified_count)
+
+@app.route('/playlists/<playlist_id>', methods=['DELETE'])
+def delete_playlist(playlist_id):
+    result = playlists_collection.delete_one({'_id': ObjectId(playlist_id)})
+    return jsonify(result.deleted_count)
