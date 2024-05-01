@@ -7,6 +7,20 @@ from .models.user import User
 
 users_collection = mongo.db.users
 
+@app.route('/users/<user_id>/preferences', methods=['PUT'])
+def update_user_preferences(user_id):
+    data = request.get_json()
+    
+    preferences = data.get('preferences')
+    result = users_collection.update_one(
+        {'_id': ObjectId(user_id)},
+        {'$set': {'preferences': preferences}}
+    )
+    if result.modified_count == 1:
+        return jsonify({"msg": "User preferences updated successfully"}), 200
+    else:
+        return jsonify({"error": "User not found or preferences not updated"}), 404
+
 @app.route('/users/<user_id>')
 def get_user_info(user_id):
     user = users_collection.find_one_or_404({'_id': ObjectId(user_id)})
