@@ -1,11 +1,12 @@
-from flask import jsonify
+from flask import jsonify, request
+from bson.json_util import dumps
+from . import mongo
+from .models.user import User
 
-# Example route for retrieving user information
+users_collection = mongo.db.users
+
+@app.route('/users/<user_id>')
 def get_user_info(user_id):
-    # Replace this with actual logic to fetch user info from database
-    user_info = {
-        "id": user_id,
-        "username": "john_doe",
-        "email": "john@example.com"
-    }
-    return jsonify(user_info)
+    user = users_collection.find_one_or_404({'_id': ObjectId(user_id)})
+    return jsonify(User.from_mongo(user).to_dict())
+
