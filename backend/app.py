@@ -7,6 +7,10 @@ mongo = PyMongo(app)
 app.config['JWT_SECRET_KEY'] = config.JWT_SECRET_KEY
 jwt = JWTManager(app)
 
+@app.errorhandler(404)
+def page_not_found(error):
+    return jsonify({"error": "Not found"}), 404
+
 if __name__ == "__main__":
     app.run(debug=True)
 
