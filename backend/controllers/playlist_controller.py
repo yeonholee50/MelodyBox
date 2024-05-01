@@ -40,7 +40,6 @@ def update_playlist(playlist_id):
     else:
         return jsonify({"error": "Playlist not found or not updated"}), 404
 
-# Example route for deleting a playlist
 @app.route('/playlists/<playlist_id>', methods=['DELETE'])
 def delete_playlist(playlist_id):
     result = playlists_collection.delete_one({'_id': ObjectId(playlist_id)})
