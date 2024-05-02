@@ -36,6 +36,11 @@ class UserSession: ObservableObject {
     
     func logout() {
         isLoggedIn = false
-        // Clear user session data, navigate to login screen, etc.
+        
+        
+        DispatchQueue.main.async {
+            if let appDelegate = UIApplication.shared.delegate as? AppDelegate,
+            let window = appDelegate.window {
+                window.rootViewController = UIHostingController(rootView: ContentView())
     }
 }
