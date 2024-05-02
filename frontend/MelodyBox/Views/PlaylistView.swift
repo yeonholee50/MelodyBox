@@ -2,6 +2,7 @@ import SwiftUI
 
 struct PlaylistView: View {
     @State private var playlistName: String = ""
+    @EnvironmentObject var userSession: UserSession
     
     var body: some View {
         VStack {
@@ -10,7 +11,7 @@ struct PlaylistView: View {
                 .padding()
             
             Button(action: {
-                // Perform playlist creation action
+                createPlaylist()
             }) {
                 Text("Create Playlist")
                     .padding()
@@ -21,4 +22,17 @@ struct PlaylistView: View {
         }
         .padding()
     }
+    
+    private func createPlaylist() {
+        // Perform playlist creation action
+        userSession.apiService.createPlaylist(name: playlistName) { result in
+            switch result {
+            case .success(let playlist):
+                print("Playlist created successfully: \(playlist)")
+            case .failure(let error):
+                print("Failed to create playlist: \(error)")
+            }
+        }
+    }
 }
+
