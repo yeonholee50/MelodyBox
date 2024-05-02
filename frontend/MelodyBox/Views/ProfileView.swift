@@ -31,8 +31,6 @@ struct ProfileView: View {
     }
     
     private func logout() {
-        // Perform logout action
-        print("Logging out")
-        // Add logic to perform logout (like clear user session)
+        userSession.logout()
     }
 }
